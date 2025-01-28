@@ -1,0 +1,158 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+  <title>{% block title %}Gerador de Relatórios{% endblock %}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static 'analytics/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'analytics/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'analytics/css/custom.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css">
+</head>
+
+<body>
+  <div class="wrapper d-flex align-items-stretch">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+      <div class="custom-menu">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary">
+          <i class="fa fa-bars"></i>
+          <span class="sr-only">Toggle Menu</span>
+        </button>
+      </div>
+      <div class="p-4">
+        <h1><a href="{% url 'home' %}" class="logo">Gerador de Relatórios</a></h1>
+        <ul class="list-unstyled components mb-5">
+          <li class="active">
+            <a href="{% url 'home' %}"><span class="fa fa-home mr-3"></span>Novo Relatório</a>
+          </li>
+        </ul>
+
+        <!-- Formulário de Upload do CSV -->
+        <div class="mb-5">
+          <form method="post" enctype="multipart/form-data" id="uploadForm">
+            {% csrf_token %}
+            <div class="mb-3 text-center">
+              <label for="file" class="custom-file-upload">
+                Carregar arquivo CSV
+              </label>
+              <input type="file" name="file" id="file" accept=".csv" style="display: none;" required>
+              <div id="fileName" class="mt-2 text-muted"></div>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Analisar</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="progress-wrapper" id="progressWrapper">
+          <div class="progress">
+            <div class="progress-text">0%</div>
+            <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+          </div>
+        </div>
+
+        {% if error %}
+        <div class="result-container">
+          <div class="alert alert-danger">{{ error }}</div>
+        </div>
+        {% endif %}
+      </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div id="content" class="p-4 p-md-5 pt-5">
+      {% block content %}
+      {% if analysis_result %}
+      <div class="report-container">
+        <div class="report-header">
+          <h2>Resultado da Análise</h2>
+        </div>
+        <div class="markdown-body">
+          {{ analysis_result|safe }}
+        </div>
+      </div>
+      {% else %}
+      <div class="welcome-section">
+        <div class="institutional-info">
+          <div class="university">Universidade Federal de Goiás</div>
+          <div class="course">
+            Especialização Lato Sensu<br>
+            Pós-Graduação em Sistemas e Agentes Inteligentes
+          </div>
+          <div class="student-cards">
+            <div class="student-card">
+              <div class="student-name">CELIO CARCALTO</div>
+              <div class="student-id">Matrícula: 2024201158</div>
+            </div>
+            <div class="student-card">
+              <div class="student-name">ANAHI PHILBOIS</div>
+              <div class="student-id">Matrícula: 2024201159</div>
+            </div>
+          </div>
+        </div>
+
+        <h1 class="welcome-title" style="margin-top: 30px;">Sistema de Geração de Relatórios para Análise de Dados</h1>
+        
+        <div class="welcome-text">
+          <p>
+            O sistema é uma ferramenta poderosa e intuitiva projetada para auxiliar usuários na análise de dados a partir de uma base inicial em formato CSV.
+          </p>
+        </div>
+
+        <div class="feature-cards">
+          <div class="feature-card">
+            <h3><span class="emoji-highlight">🔄</span>Processamento de Dados</h3>
+            <p>Carregamento de CSV, validação e limpeza automatizada, incluindo remoção de duplicatas e tratamento de valores ausentes.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3><span class="emoji-highlight">🧹</span>Limpeza Inteligente</h3>
+            <p>Identificação automática de tipos de dados, preenchimento com mediana para números e moda para categorias.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3><span class="emoji-highlight">📊</span>Análise Exploratória</h3>
+            <p>Análise exploratória detalhada (EDA), gerando estatísticas descritivas e detectando tendências, padrões e outliers.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3><span class="emoji-highlight">🤖</span>Integração com IA</h3>
+            <p>Integração com API do Google Gemini para gerar insights detalhados e sugerir visualizações gráficas.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3><span class="emoji-highlight">📑</span>Relatórios Dinâmicos</h3>
+            <p>Resultados em formato MARKDOWN, organizados com títulos, subtítulos, listas e emojis para facilitar a leitura.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3><span class="emoji-highlight">🛡️</span>Segurança e Eficiência</h3>
+            <p>Processamento em lotes para grandes volumes, segurança avançada e adaptabilidade a diferentes cenários.</p>
+          </div>
+        </div>
+
+        <div class="welcome-text">
+          <p style="text-align: center; font-size: 1.2em; font-weight: 500; color: #2C3E50;">
+            Transforme seus dados em insights valiosos com essa solução completa! 🚀
+          </p>
+        </div>
+      </div>
+      {% endif %}
+      {% endblock %}
+    </div>
+  </div>
+
+  <script src="{% static 'analytics/js/jquery.min.js' %}"></script>
+  <script src="{% static 'analytics/js/popper.js' %}"></script>
+  <script src="{% static 'analytics/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'analytics/js/main.js' %}"></script>
+  <script src="{% static 'analytics/js/upload-handler.js' %}"></script>
+</body>
+
+</html>
