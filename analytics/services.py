@@ -50,8 +50,8 @@ def validar_e_limpar_dados(df):
 def gerar_descricao_limpeza(df_original, df_limpo):
     descricao = "### Validação e Limpeza dos Dados\n\n"
     descricao += f"- **Total de linhas no CSV original**: {len(df_original)}\n"
-    descricao += f"- **Total de linhas após remoção de duplicatas**: {
-        len(df_limpo)} (Removidas {len(df_original) - len(df_limpo)} duplicatas)\n"
+    descricao += f"- **Total de linhas após remoção de duplicatas**: {len(df_limpo)} "
+    descricao += f"(Removidas {len(df_original) - len(df_limpo)} duplicatas)\n"
 
     colunas_numericas = df_limpo.select_dtypes(
         include=['number']).columns.tolist()
@@ -64,11 +64,8 @@ def gerar_descricao_limpeza(df_original, df_limpo):
     ).sum().sum() - df_limpo[colunas_numericas].isnull().sum().sum()
     num_preenchidos_cat = df_original[colunas_categoricas].isnull(
     ).sum().sum() - df_limpo[colunas_categoricas].isnull().sum().sum()
-    descricao += f"- **Valores ausentes preenchidos nas colunas numéricas**: {
-        num_preenchidos_num} (com a mediana)\n"
-    descricao += f"- **Valores ausentes preenchidos nas colunas categóricas**: {
-        num_preenchidos_cat} (com a moda)\n"
-
+    descricao += f"- **Valores ausentes preenchidos nas colunas numéricas**: {num_preenchidos_num} (com a mediana)\n"
+    descricao += f"- **Valores ausentes preenchidos nas colunas categóricas**: {num_preenchidos_cat} (com a moda)\n"
     colunas_removidas = [
         col for col in df_original.columns if col not in df_limpo.columns]
     if colunas_removidas:
